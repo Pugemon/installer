@@ -1,5 +1,5 @@
 #######################################################
-####### Anarchy ZSH configuration file    #######
+####### Trap ZSH configuration file    #######
 #######################################################
 
 ### Set/unset ZSH options
