@@ -71,9 +71,9 @@ prettify() {
 
 set_version() {
     # Label must be up to 11 chars long (incremental numbers)
-    anarchy_iso_label="TRAP110"
-    anarchy_iso_release="1.1.0"
-    anarchy_iso_name="trap-${trap_iso_release}-x86_64.iso"
+    trap_iso_label="TRAP110"
+    trap_iso_release="1.1.0"
+    trap_iso_name="trap-${trap_iso_release}-x86_64.iso"
 }
 
 init() {
