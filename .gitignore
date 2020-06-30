@@ -2,10 +2,10 @@
 archlinux-*-x86_64.iso
 sha1sums.txt
 
-# Anarchy-generated dirs
+# Trap-generated dirs
 logs
 out
 
-# Anarchy ISOs, checksums etc.
-anarchy-*-x86_64.iso
-anarchy-*-x86_64.iso.*
+# Trap ISOs, checksums etc.
+trap-*-x86_64.iso
+trap-*-x86_64.iso.*
