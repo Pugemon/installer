@@ -19,7 +19,7 @@ out_dir="${project_dir}"/out # Directory for generated ISO
 # Label must be up to 11 chars long (incremental numbers)
 # anarchy_iso_label="ANARCHY10" # from ENV
 # anarchy_iso_release="1.0.10"  # from ENV
-anarchy_iso_name="anarchy-${anarchy_iso_release}-x86_64.iso"
+anarchy_iso_name="trap-${trap_iso_release}-x86_64.iso"
 
 local_aur_packages=(
     'numix-icon-theme-git'
@@ -44,9 +44,9 @@ init() {
         mkdir "${out_dir}"
     fi
 
-    # Remove existing Anarchy iso with same name
-    if [ -e "${out_dir}"/"${anarchy_iso_name}" ]; then
-        rm "${out_dir}"/"${anarchy_iso_name}"
+    # Remove existing Trap iso with same name
+    if [ -e "${out_dir}"/"${trap_iso_name}" ]; then
+        rm "${out_dir}"/"${trap_iso_name}"
     fi
 }
 
@@ -83,22 +83,22 @@ copy_config_files() {
     cp "${project_dir}"/etc/vconsole.conf "${project_dir}"/etc/locale.gen "${squashfs}"/etc/
     arch-chroot "${squashfs}" /bin/bash locale-gen
 
-    # Copy over main Anarchy config and installer script, make them executable
-    echo "Adding anarchy config and installer scripts to iso ..."
-    cp "${project_dir}"/etc/anarchy.conf "${project_dir}"/etc/pacman.conf "${squashfs}"/etc/
-    cp "${project_dir}"/anarchy-installer.sh "${squashfs}"/usr/bin/anarchy
+    # Copy over main Trap config and installer script, make them executable
+    echo "Adding trap config and installer scripts to iso ..."
+    cp "${project_dir}"/etc/trap.conf "${project_dir}"/etc/pacman.conf "${squashfs}"/etc/
+    cp "${project_dir}"/trap-installer.sh "${squashfs}"/usr/bin/trap
     cp "${project_dir}"/extra/sysinfo "${project_dir}"/extra/iptest "${squashfs}"/usr/bin/
-    chmod +x "${squashfs}"/usr/bin/anarchy "${squashfs}"/usr/bin/sysinfo "${squashfs}"/usr/bin/iptest
+    chmod +x "${squashfs}"/usr/bin/trap "${squashfs}"/usr/bin/sysinfo "${squashfs}"/usr/bin/iptest
 
-    # Create Anarchy and lang directories, copy over all lang files
+    # Create Trap and lang directories, copy over all lang files
     echo "Adding language files to iso ..."
-    mkdir -p "${squashfs}"/usr/share/anarchy/lang "${squashfs}"/usr/share/anarchy/extra "${squashfs}"/usr/share/anarchy/boot "${squashfs}"/usr/share/anarchy/etc
-    cp "${project_dir}"/lang/* "${squashfs}"/usr/share/anarchy/lang/
+    mkdir -p "${squashfs}"/usr/share/trap/lang "${squashfs}"/usr/share/trap/extra "${squashfs}"/usr/share/trap/boot "${squashfs}"/usr/share/trap/etc
+    cp "${project_dir}"/lang/* "${squashfs}"/usr/share/trap/lang/
 
     # Create shell function library, copy /lib to squashfs-root
     echo "Adding anarchy scripts to iso ..."
-    mkdir "${squashfs}"/usr/lib/anarchy
-    cp "${project_dir}"/lib/* "${squashfs}"/usr/lib/anarchy/
+    mkdir "${squashfs}"/usr/lib/trap
+    cp "${project_dir}"/lib/* "${squashfs}"/usr/lib/trap/
 
     # Copy over extra files (dot files, desktop configurations, help file, issue file, hostname file)
     echo -e "Adding dot files and desktop configurations to iso ..."
@@ -106,29 +106,29 @@ copy_config_files() {
     cp "${project_dir}"/extra/shellrc/.zshrc "${squashfs}"/root/
     cp "${project_dir}"/extra/.help "${project_dir}"/extra/.dialogrc "${squashfs}"/root/
     cp "${project_dir}"/extra/shellrc/.zshrc "${squashfs}"/etc/zsh/zshrc
-    cp -r "${project_dir}"/extra/shellrc/. "${squashfs}"/usr/share/anarchy/extra/
-    cp -r "${project_dir}"/extra/desktop "${project_dir}"/extra/fonts "${project_dir}"/extra/anarchy-icon.png "${squashfs}"/usr/share/anarchy/extra/
+    cp -r "${project_dir}"/extra/shellrc/. "${squashfs}"/usr/share/trap/extra/
+    cp -r "${project_dir}"/extra/desktop "${project_dir}"/extra/fonts "${project_dir}"/extra/trap-icon.png "${squashfs}"/usr/share/trap/extra/
     cat "${project_dir}"/extra/.helprc | tee -a "${squashfs}"/root/.zshrc >/dev/null
     cp "${project_dir}"/etc/hostname "${project_dir}"/etc/issue_cli "${squashfs}"/etc/
-    cp -r "${project_dir}"/boot/splash.png "${project_dir}"/boot/loader/ "${squashfs}"/usr/share/anarchy/boot/
-    cp "${project_dir}"/etc/nvidia340.xx "${squashfs}"/usr/share/anarchy/etc/
+    cp -r "${project_dir}"/boot/splash.png "${project_dir}"/boot/loader/ "${squashfs}"/usr/share/trap/boot/
+    cp "${project_dir}"/etc/nvidia340.xx "${squashfs}"/usr/share/trap/etc/
 
     if [ -d branding ]; then
-        cp "${project_dir}"/branding/wallpapers/* "${squashfs}"/usr/share/anarchy/extra/wallpapers/
+        cp "${project_dir}"/branding/wallpapers/* "${squashfs}"/usr/share/trap/extra/wallpapers/
     else
         echo "Missing branding directory, skipping ..."
     fi
 
     # Copy over built packages and create repository
     echo "Adding built AUR packages to iso ..."
-    mkdir "${custom_iso}"/arch/x86_64/squashfs-root/usr/share/anarchy/pkg
+    mkdir "${custom_iso}"/arch/x86_64/squashfs-root/usr/share/trap/pkg
 
     for pkg in $(echo "${local_aur_packages[@]}"); do
-        cp /home/builder/"${pkg}"/*.pkg.tar.xz "${squashfs}"/usr/share/anarchy/pkg/
+        cp /home/builder/"${pkg}"/*.pkg.tar.xz "${squashfs}"/usr/share/trap/pkg/
     done
 
-    cd "${squashfs}"/usr/share/anarchy/pkg || exit
-    repo-add anarchy-local.db.tar.gz *.pkg.tar.xz
+    cd "${squashfs}"/usr/share/trap/pkg || exit
+    repo-add trap-local.db.tar.gz *.pkg.tar.xz
     cd "${project_dir}" || exit
 
     echo "Done adding files to iso"
@@ -151,11 +151,11 @@ build_system() {
     rm airootfs.sfs
 
     # Recreate the iso using compression, remove unsquashed system, generate checksums
-    echo "Recreating Anarchy image ..."
+    echo "Recreating Trap image ..."
     mksquashfs squashfs-root airootfs.sfs -b 1024k -comp xz
     rm -r squashfs-root
     md5sum airootfs.sfs > airootfs.md5
-    echo "Done recreating Anarchy image"
+    echo "Done recreating Trap image"
     echo ""
 }
 
@@ -163,16 +163,16 @@ configure_boot() {
     echo "Configuring boot ..."
     arch_iso_label="$(<"${custom_iso}"/loader/entries/archiso-x86_64.conf awk 'NR==6{print $NF}' | sed 's/.*=//')"
     arch_iso_hex="$(<<<"${arch_iso_label}" xxd -p)"
-    anarchy_iso_hex="$(<<<"${anarchy_iso_label}" xxd -p)"
+    anarchy_iso_hex="$(<<<"${trap_iso_label}" xxd -p)"
     cp "${project_dir}"/boot/splash.png "${custom_iso}"/arch/boot/syslinux/
     cp "${project_dir}"/boot/iso/archiso_head.cfg "${custom_iso}"/arch/boot/syslinux/
-    sed -i "s/${arch_iso_label}/${anarchy_iso_label}/;s/Arch Linux archiso/Anarchy Linux/" "${custom_iso}"/loader/entries/archiso-x86_64.conf
-    sed -i "s/${arch_iso_label}/${anarchy_iso_label}/;s/Arch Linux/Anarchy Linux/" "${custom_iso}"/arch/boot/syslinux/archiso_sys.cfg
-    sed -i "s/${arch_iso_label}/${anarchy_iso_label}/;s/Arch Linux/Anarchy Linux/" "${custom_iso}"/arch/boot/syslinux/archiso_pxe.cfg
+    sed -i "s/${arch_iso_label}/${trap_iso_label}/;s/Arch Linux archiso/Trap Linux/" "${custom_iso}"/loader/entries/archiso-x86_64.conf
+    sed -i "s/${arch_iso_label}/${trap_iso_label}/;s/Arch Linux/Trap Linux/" "${custom_iso}"/arch/boot/syslinux/archiso_sys.cfg
+    sed -i "s/${arch_iso_label}/${trap_iso_label}/;s/Arch Linux/Trap Linux/" "${custom_iso}"/arch/boot/syslinux/archiso_pxe.cfg
     cd "${custom_iso}"/EFI/archiso/ || exit
-    echo -e "Replacing label hex in efiboot.img...\n${arch_iso_label} ${arch_iso_hex} > ${anarchy_iso_label} ${anarchy_iso_hex}"
-    xxd -c 256 -p efiboot.img | sed "s/${arch_iso_hex}/${anarchy_iso_hex}/" | xxd -r -p > efiboot1.img
-    if ! (xxd -c 256 -p efiboot1.img | grep "${anarchy_iso_hex}" &>/dev/null); then
+    echo -e "Replacing label hex in efiboot.img...\n${arch_iso_label} ${arch_iso_hex} > ${trap_iso_label} ${trap_iso_hex}"
+    xxd -c 256 -p efiboot.img | sed "s/${arch_iso_hex}/${trap_iso_hex}/" | xxd -r -p > efiboot1.img
+    if ! (xxd -c 256 -p efiboot1.img | grep "${trap_iso_hex}" &>/dev/null); then
         echo -e "\nError: failed to replace label hex in efiboot.img"
         echo -e "Press any key to continue."
         read input
@@ -183,12 +183,12 @@ configure_boot() {
 }
 
 create_iso() {
-    echo "Creating new Anarchy image ..."
+    echo "Creating new Trap image ..."
     cd "${project_dir}" || exit
     xorriso -as mkisofs \
         -iso-level 3 \
         -full-iso9660-filenames \
-        -volid "${anarchy_iso_label}" \
+        -volid "${trap_iso_label}" \
         -eltorito-boot isolinux/isolinux.bin \
         -eltorito-catalog isolinux/boot.cat \
         -no-emul-boot -boot-load-size 4 -boot-info-table \
@@ -196,7 +196,7 @@ create_iso() {
         -eltorito-alt-boot \
         -e EFI/archiso/efiboot.img \
         -no-emul-boot -isohybrid-gpt-basdat \
-        -output "${out_dir}"/"${anarchy_iso_name}" \
+        -output "${out_dir}"/"${trap_iso_name}" \
         "${custom_iso}"
 
     if [ "$?" -eq 0 ]; then
@@ -213,7 +213,7 @@ create_iso() {
 generate_checksums() {
     echo "Generating image checksum ..."
     cd "${out_dir}"
-    echo -e "$(sha256sum "${anarchy_iso_name}")" > "${anarchy_iso_name}".sha256sum
+    echo -e "$(sha256sum "${trap_iso_name}")" > "${trap_iso_name}".sha256sum
     echo "Done generating image checksum"
     echo ""
 }
@@ -226,5 +226,5 @@ build_system
 configure_boot
 create_iso
 
-echo -e "\"${anarchy_iso_name}\" image generated successfully. Check 'out' directory.\n"
+echo -e "\"${trap_iso_name}\" image generated successfully. Check 'out' directory.\n"
 exit 0
