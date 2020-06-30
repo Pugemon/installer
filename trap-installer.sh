@@ -6,16 +6,12 @@
 # shellcheck disable=SC2154
 
 ###############################################################
-### Anarchy Linux Install Script
+### Trap Linux Install Script
 ###
-### Copyright (C) 2017 Dylan Schacht
+### Copyright (C) 2020 Pugemon
 ###
-### By: Dylan Schacht (deadhead)
-### Email: deadhead3492@gmail.com
-### Webpage: https://anarchylinux.org
+### By: Pugemon (deadhead)
 ###
-### Any questions, comments, or bug reports may be sent to above
-### email address. Enjoy, and keep on using Arch.
 ###
 ### License: GPL v2.0
 ###
@@ -35,28 +31,28 @@
 ################################################################
 
 init() {
-    if [[ $(basename "$0") = "anarchy" ]]; then
-        anarchy_directory="/usr/share/anarchy" # prev: aa_dir
-        anarchy_config="/etc/anarchy.conf" # prev: aa_conf
-        anarchy_scripts="/usr/lib/anarchy" # prev: aa_lib
+    if [[ $(basename "$0") = "trap" ]]; then
+        trap_directory="/usr/share/trap" # prev: ta_dir
+        trap_config="/etc/trap.conf" # prev: ta_conf
+        trap_scripts="/usr/lib/trap" # prev: ta_lib
     else
-        anarchy_directory=$(dirname "$(readlink -f "$0")") # Anarchy git repository
-        anarchy_config="${anarchy_directory}"/etc/anarchy.conf
-        anarchy_scripts="${anarchy_directory}"/lib
+        trap_directory=$(dirname "$(readlink -f "$0")") # Trap git repository
+        trap_config="${trap_directory}"/etc/trap.conf
+        trap_scripts="${trap_directory}"/lib
     fi
 
     trap '' 2
 
-    for script in "${anarchy_scripts}"/*.sh ; do
+    for script in "${trap_scripts}"/*.sh ; do
         [[ -e "${script}" ]] || break
-        # shellcheck source=/usr/lib/anarchy/*.sh
+        # shellcheck source=/usr/lib/trap/*.sh
         source "${script}"
     done
 
-    # shellcheck source=/etc/anarchy.conf
-    source "${anarchy_config}"
+    # shellcheck source=/etc/trap.conf
+    source "${trap_config}"
     language
-    # shellcheck source=/usr/share/anarchy/lang
+    # shellcheck source=/usr/share/trap/lang
     source "${lang_file}" # /lib/language.sh:43-60
     export reload=true
 }
@@ -80,27 +76,27 @@ main() {
 
 dialog() {
     # If terminal height is more than 25 lines add a backtitle
-    if "${screen_h}" ; then # /etc/anarchy.conf:62
-        if "${LAPTOP}" ; then # /etc/anarchy.conf:75
-            # Show battery life next to Anarchy heading
+    if "${screen_h}" ; then # /etc/trap.conf:62
+        if "${LAPTOP}" ; then # /etc/trap.conf:75
+            # Show battery life next to Trap heading
             backtitle="${backtitle} $(acpi)"
         fi
         # op_title is the current menu title
         /usr/bin/dialog --colors --backtitle "${backtitle}" --title "${op_title}" "$@"
     else
-        # title is the main title (Anarchy)
+        # title is the main title (Trap)
         /usr/bin/dialog --colors --title "${title}" "$@"
     fi
 }
 
 if [[ "${UID}" -ne "0" ]]; then
-    echo "Error: anarchy requires root privilege"
-    echo "       Use: sudo anarchy"
+    echo "Error: trap requires root privilege"
+    echo "       Use: sudo trap"
     exit 1
 fi
 
 # Read optional arguments
-opt="$1" # /etc/anarchy.conf:105
+opt="$1" # /etc/trap.conf:105
 init
 main
 
