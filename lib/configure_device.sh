@@ -1,16 +1,10 @@
 #!/usr/bin/env bash
 ###############################################################
-### Anarchy Linux Install Script
+### Trap Linux Install Script
 ### configure_device.sh
 ###
-### Copyright (C) 2017 Dylan Schacht
 ###
-### By: Dylan Schacht (deadhead)
-### Email: deadhead3492@gmail.com
-### Webpage: https://anarchylinux.org
 ###
-### Any questions, comments, or bug reports may be sent to above
-### email address. Enjoy, and keep on using Arch.
 ###
 ### License: GPL v2.0
 ###############################################################
