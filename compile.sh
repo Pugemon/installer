@@ -367,8 +367,8 @@ compile_in_docker() {
             docker run --rm --privileged \
                 --device-cgroup-rule='b 7:* rmw' \
                 -v "${PWD}":/project \
-                -e anarchy_iso_label="${anarchy_iso_label}" \
-                -e anarchy_iso_release="${anarchy_iso_release}" \
+                -e trap_iso_label="${trap_iso_label}" \
+                -e trap_iso_release="${trap_iso_release}" \
                 "${docker_repo}"
             exit 0
         else
@@ -517,7 +517,7 @@ configure_boot() {
     cp "${working_dir}"/boot/iso/archiso_head.cfg "${custom_iso}"/arch/boot/syslinux/
     sed -i "s/${arch_iso_label}/${trap_iso_label}/;s/Arch Linux archiso/Trap Linux/" "${custom_iso}"/loader/entries/archiso-x86_64.conf
     sed -i "s/${arch_iso_label}/${trap_iso_label}/;s/Arch Linux/Trap Linux/" "${custom_iso}"/arch/boot/syslinux/archiso_sys.cfg
-    sed -i "s/${arch_iso_label}/${anarchy_iso_label}/;s/Arch Linux/Trap Linux/" "${custom_iso}"/arch/boot/syslinux/archiso_pxe.cfg
+    sed -i "s/${arch_iso_label}/${trap_iso_label}/;s/Arch Linux/Trap Linux/" "${custom_iso}"/arch/boot/syslinux/archiso_pxe.cfg
     cd "${custom_iso}"/EFI/archiso/ || exit
     echo -e "Replacing label hex in efiboot.img...\n${arch_iso_label} ${arch_iso_hex} > ${trap_iso_label} ${trap_iso_hex}" | log
     xxd -c 256 -p efiboot.img | sed "s/${arch_iso_hex}/${trap_iso_hex}/" | xxd -r -p > efiboot1.img
