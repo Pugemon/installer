@@ -1,16 +1,10 @@
 #!/usr/bin/env bash
 ###############################################################
-### Anarchy Linux Install Script
+### Trap Linux Install Script
 ### configure_base.sh
 ###
-### Copyright (C) 2017 Dylan Schacht
 ###
-### By: Dylan Schacht (deadhead)
-### Email: deadhead3492@gmail.com
-### Webpage: https://anarchylinux.org
 ###
-### Any questions, comments, or bug reports may be sent to above
-### email address. Enjoy, and keep on using Arch.
 ###
 ### License: GPL v2.0
 ###############################################################
@@ -20,11 +14,11 @@ install_options() {
     op_title="$install_op_msg"
         while (true) ; do
                  install_opt=$(dialog --ok-button "$ok" --cancel-button "$cancel" --menu "$install_opt_msg" 16 80 5 \
-                         "Anarchy-Desktop"       "$install_opt1" \
-                         "Anarchy-Desktop-LTS"   "$install_opt2" \
-                         "Anarchy-Server"        "$install_opt3" \
-                         "Anarchy-Server-LTS"    "$install_opt4" \
-             "Anarchy-Advanced"      "$install_opt0" 3>&1 1>&2 2>&3)
+                         "Trap-Desktop"       "$install_opt1" \
+                         "Trap-Desktop-LTS"   "$install_opt2" \
+                         "Trap-Server"        "$install_opt3" \
+                         "Trap-Server-LTS"    "$install_opt4" \
+             "Trap-Advanced"      "$install_opt0" 3>&1 1>&2 2>&3)
                  if [ "$?" -gt "0" ]; then
                           if (dialog --defaultno --yes-button "$yes" --no-button "$no" --yesno "\n$exit_msg" 10 60) then
                                   main_menu
@@ -35,7 +29,7 @@ install_options() {
          done
 
          case "$install_opt" in
-                 Anarchy-Advanced)       prepare_base
+                 Trap-Advanced)       prepare_base
                                          graphics
                  ;;
                  *)                      quick_install
@@ -125,8 +119,8 @@ prepare_base() {
                                 sh="/usr/bin/$shell" shell="zsh zsh-syntax-highlighting"
 
                                 if [ "$shrc" == "oh-my-zsh" ]; then
-                                    if ! (grep "anarchy-local" </etc/pacman.conf &>/dev/null); then
-                                        sed -i -e '$a\\n[anarchy-local]\nServer = file:///usr/share/anarchy/pkg\nSigLevel = Never' /etc/pacman.conf
+                                    if ! (grep "trap-local" </etc/pacman.conf &>/dev/null); then
+                                        sed -i -e '$a\\n[trap-local]\nServer = file:///usr/share/trap/pkg\nSigLevel = Never' /etc/pacman.conf
                                     fi
                                     shell+=" oh-my-zsh-git"
                                 elif [ "$shrc" == "grml-zsh-config" ]; then
