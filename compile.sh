@@ -620,9 +620,7 @@ cleanup() {
     fi
 
     if [ "${last_command}" != "init" ]; then
-        echo -e "${color_white}Please report this issue to our Github issue tracker: https://git.io/JeOxK${color_blank}"
-        echo -e "${color_white}Make sure to include the relevant log: ${log_file}${color_blank}"
-        echo -e "${color_white}You can also ask about the issue in our Telegram: https://t.me/anarchy_linux${color_blank}"
+        echo -e "${color_white}Please report this issue to Google{color_blank}"
     fi
 }
 
@@ -684,7 +682,7 @@ while (true); do
             configure_boot
             create_iso
             uninstall_dependencies
-            echo -e "${color_green}${anarchy_iso_name} image generated successfully. Check 'out' directory\n${color_blank}" | log
+            echo -e "${color_green}${trap_iso_name} image generated successfully. Check 'out' directory\n${color_blank}" | log
             exit 0
         ;;
     esac
