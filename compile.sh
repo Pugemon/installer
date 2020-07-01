@@ -348,7 +348,7 @@ compile_in_docker() {
     if [ "${docker_compile}" = true ]; then
         # Make sure docker is installed
         if [ $(command -v docker) ]; then
-            # anarchy_docker_images=$(docker images | grep anarchy | awk '{print $1":"$2}' )
+            # trap_docker_images=$(docker images | grep trap | awk '{print $1":"$2}' )
             if [ -z $(docker images -q "${docker_repo}") ]; then
                 echo -e "Local docker image \"${docker_repo}\" does not exist. Creating..." | log
                 build_docker_image
@@ -447,10 +447,10 @@ copy_config_files() {
     # Create Trap and lang directories, copy over all lang files
     echo -e "Adding language files to iso ..." | log
     sudo mkdir -p "${squashfs}"/usr/share/trap/lang "${squashfs}"/usr/share/trap/extra "${squashfs}"/usr/share/trap/boot "${squashfs}"/usr/share/trap/etc
-    sudo cp "${working_dir}"/lang/* "${squashfs}"/usr/share/anarchy/lang/
+    sudo cp "${working_dir}"/lang/* "${squashfs}"/usr/share/trap/lang/
 
     # Create shell function library, copy /lib to squashfs-root
-    echo -e "Adding anarchy scripts to iso ..." | log
+    echo -e "Adding trap scripts to iso ..." | log
     sudo mkdir "${squashfs}"/usr/lib/trap
     sudo cp "${working_dir}"/lib/* "${squashfs}"/usr/lib/trap/
 
@@ -478,7 +478,7 @@ copy_config_files() {
     done
 
     cd "${squashfs}"/usr/share/trap/pkg || exit
-    sudo repo-add anarchy-local.db.tar.gz *.pkg.tar.xz
+    sudo repo-add trap-local.db.tar.gz *.pkg.tar.xz
     cd "${working_dir}" || exit
 
     echo -e "Done adding files to iso"
@@ -512,7 +512,7 @@ configure_boot() {
     echo -e "Configuring boot ..." | log
     arch_iso_label="$(<"${custom_iso}"/loader/entries/archiso-x86_64.conf awk 'NR==6{print $NF}' | sed 's/.*=//')"
     arch_iso_hex="$(<<<"${arch_iso_label}" xxd -p)"
-    anarchy_iso_hex="$(<<<"${trap_iso_label}" xxd -p)"
+    trap_iso_hex="$(<<<"${trap_iso_label}" xxd -p)"
     cp "${working_dir}"/boot/splash.png "${custom_iso}"/arch/boot/syslinux/
     cp "${working_dir}"/boot/iso/archiso_head.cfg "${custom_iso}"/arch/boot/syslinux/
     sed -i "s/${arch_iso_label}/${trap_iso_label}/;s/Arch Linux archiso/Trap Linux/" "${custom_iso}"/loader/entries/archiso-x86_64.conf
