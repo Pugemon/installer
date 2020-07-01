@@ -9,7 +9,7 @@
 ### License: GPL v2.0
 ###############################################################
 
-anarchy_chroot() {
+trap_chroot() {
 
     local char=
     local input=
