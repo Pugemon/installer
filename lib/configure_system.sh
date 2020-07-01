@@ -1,16 +1,10 @@
 #!/usr/bin/env bash
 ###############################################################
-### Anarchy Linux Install Script
+### Trap Linux Install Script
 ### configure_system.sh
 ###
-### Copyright (C) 2017 Dylan Schacht
 ###
-### By: Dylan Schacht (deadhead)
-### Email: deadhead3492@gmail.com
-### Webpage: https://anarchylinux.org
 ###
-### Any questions, comments, or bug reports may be sent to above
-### email address. Enjoy, and keep on using Arch.
 ###
 ### License: GPL v2.0
 ###############################################################
@@ -186,15 +180,15 @@ configure_system() {
 
     if "$desktop"; then
         config_env &
-        pid=$! pri="0.1" msg="$wait_load \n\n \Z1> \Z2anarchy configure desktop\Zn" load
+        pid=$! pri="0.1" msg="$wait_load \n\n \Z1> \Z2trap configure desktop\Zn" load
 
         if [ "$DM" == "lightdm" ]; then
-            cp -r "${anarchy_directory}"/extra/desktop/lightdm/lightdm-gtk-greeter.conf "$ARCH"/etc/lightdm/
+            cp -r "${trap_directory}"/extra/desktop/lightdm/lightdm-gtk-greeter.conf "$ARCH"/etc/lightdm/
         fi
     fi
 
     #if "$add_repo" ; then
-        #echo -e "\n[anarchy]\nServer = $aa_repo\nSigLevel = Never" >> "$ARCH"/etc/pacman.conf
+        #echo -e "\n[trap]\nServer = $aa_repo\nSigLevel = Never" >> "$ARCH"/etc/pacman.conf
     #fi
 
     if "$multilib" ; then
@@ -205,7 +199,7 @@ configure_system() {
     fi
 
     if "$aa_repo" ; then
-        sed -i -e '$a\\n[anarchy]\nServer = https://anarchylinux.org/repo/x86_64\nSigLevel = Never' "$ARCH"/etc/pacman.conf
+        sed -i -e '$a\\n[trap]\nServer = https://anarchylinux.org/repo/x86_64\nSigLevel = Never' "$ARCH"/etc/pacman.conf
     fi
 
     if "$dhcp" ; then
@@ -276,31 +270,31 @@ configure_system() {
         cp "$ARCH"/etc/skel/.bash_profile "$ARCH"/root/
     elif [ "$sh" == "/usr/bin/zsh" ]; then
         if [ "$shrc" == "$default" ]; then
-            cp "${anarchy_directory}"/extra/.zshrc "$ARCH"/root/.zshrc
-            cp "${anarchy_directory}"/extra/.zshrc "$ARCH"/etc/skel/.zshrc
+            cp "${trap_directory}"/extra/.zshrc "$ARCH"/root/.zshrc
+            cp "${trap_directory}"/extra/.zshrc "$ARCH"/etc/skel/.zshrc
         elif [ "$shrc" == "oh-my-zsh" ]; then
-            cp "${anarchy_directory}"/extra/.zshrc-oh-my "$ARCH"/root/.zshrc
-            cp "${anarchy_directory}"/extra/.zshrc-oh-my "$ARCH"/etc/skel/.zshrc
+            cp "${trap_directory}"/extra/.zshrc-oh-my "$ARCH"/root/.zshrc
+            cp "${trap_directory}"/extra/.zshrc-oh-my "$ARCH"/etc/skel/.zshrc
         elif [ "$shrc" == "grml-zsh-config" ]; then
-            cp "${anarchy_directory}"/extra/.zshrc-grml "$ARCH"/root/.zshrc
-            cp "${anarchy_directory}"/extra/.zshrc-grml "$ARCH"/etc/skel/.zshrc
+            cp "${trap_directory}"/extra/.zshrc-grml "$ARCH"/root/.zshrc
+            cp "${trap_directory}"/extra/.zshrc-grml "$ARCH"/etc/skel/.zshrc
         else
             touch "$ARCH"/root/.zshrc
             touch "$ARCH"/etc/skel/.zshrc
         fi
     elif [ "$shell" == "fish" ]; then
-        echo "exec fish" >> "${anarchy_directory}"/extra/.bashrc-root
-        echo "exec fish" >> "${anarchy_directory}"/extra/.bashrc
+        echo "exec fish" >> "${trap_directory}"/extra/.bashrc-root
+        echo "exec fish" >> "${trap_directory}"/extra/.bashrc
     elif [ "$shell" == "tcsh" ]; then
-        cp "${anarchy_directory}"/extra/{.tcshrc,.tcshrc.conf} "$ARCH"/root/
-        cp "${anarchy_directory}"/extra/{.tcshrc,.tcshrc.conf} "$ARCH"/etc/skel/
+        cp "${trap_directory}"/extra/{.tcshrc,.tcshrc.conf} "$ARCH"/root/
+        cp "${trap_directory}"/extra/{.tcshrc,.tcshrc.conf} "$ARCH"/etc/skel/
     elif [ "$shell" == "mksh" ]; then
-        cp "${anarchy_directory}"/extra/.mkshrc "$ARCH"/root/
-        cp "${anarchy_directory}"/extra/.mkshrc "$ARCH"/etc/skel/
+        cp "${trap_directory}"/extra/.mkshrc "$ARCH"/root/
+        cp "${trap_directory}"/extra/.mkshrc "$ARCH"/etc/skel/
     fi
 
-    cp "${anarchy_directory}"/extra/.bashrc-root "$ARCH"/root/.bashrc
-    cp "${anarchy_directory}"/extra/.bashrc "$ARCH"/etc/skel/
+    cp "${trap_directory}"/extra/.bashrc-root "$ARCH"/root/.bashrc
+    cp "${trap_directory}"/extra/.bashrc "$ARCH"/etc/skel/
 
     sed -i 's/^#Color$/Color/' "$ARCH"/etc/pacman.conf
     sed -i 's/^#TotalDownload$/TotalDownload/' "$ARCH"/etc/pacman.conf
