@@ -1,16 +1,9 @@
 #!/usr/bin/env bash
 ###############################################################
-### Anarchy Linux Install Script
+### Trap Linux Install Script
 ### configure_user.sh
 ###
-### Copyright (C) 2017 Dylan Schacht
 ###
-### By: Dylan Schacht (deadhead)
-### Email: deadhead3492@gmail.com
-### Webpage: https://anarchylinux.org
-###
-### Any questions, comments, or bug reports may be sent to above
-### email address. Enjoy, and keep on using Arch.
 ###
 ### License: GPL v2.0
 ###############################################################
@@ -233,7 +226,7 @@ set_hostname() {
 
         while (true)     ## Begin set hostname loop
            do            ## Prompt user to enter hostname check for starting with numbers or containg special char
-                 hostname=$(dialog --ok-button "$ok" --nocancel --inputbox "\n$host_msg" 12 55 "anarchy" 3>&1 1>&2 2>&3 | sed 's/ //g')
+                 hostname=$(dialog --ok-button "$ok" --nocancel --inputbox "\n$host_msg" 12 55 "trap" 3>&1 1>&2 2>&3 | sed 's/ //g')
 
                  if (<<<$hostname grep "^[0-9]\|[\[\$\!\'\"\`\\|%&#@()+=<>~;:/?.,^{}]\|]" &> /dev/null); then
                          dialog --ok-button "$ok" --msgbox "\n$host_err_msg" 10 60
