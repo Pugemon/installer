@@ -8,10 +8,6 @@
 ###############################################################
 ### Trap Linux Install Script
 ###
-### Copyright (C) 2020 Pugemon
-###
-### By: Pugemon (deadhead)
-###
 ###
 ### License: GPL v2.0
 ###
