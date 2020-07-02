@@ -15,8 +15,3 @@ That is the Anarchy philosophy.
 # Installation
 
 Check out the [installation instructions](doc/installation.md).
-
-# Reporting issues
-
-Please read the [bug reporting guide](doc/reporting-issues.md)
-before reporting issues and remember to provide as much info as possible.
