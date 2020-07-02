@@ -442,7 +442,9 @@ copy_config_files() {
     sudo cp "${working_dir}"/etc/trap.conf "${working_dir}"/etc/pacman.conf "${squashfs}"/etc/
     sudo cp "${working_dir}"/trap-installer.sh "${squashfs}"/usr/bin/trap
     sudo cp "${working_dir}"/extra/sysinfo "${working_dir}"/extra/iptest "${squashfs}"/usr/bin/
-    sudo chmod +x "${squashfs}"/usr/bin/trap "${squashfs}"/usr/bin/sysinfo "${squashfs}"/usr/bin/iptest
+    sudo chmod +x "${squashfs}"/usr/bin/trap 
+    sudo chmod +x "${squashfs}"/usr/bin/sysinfo 
+    sudo chmod +x "${squashfs}"/usr/bin/iptest
 
     # Create Trap and lang directories, copy over all lang files
     echo -e "Adding language files to iso ..." | log
